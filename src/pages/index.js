@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { useInView } from "react-intersection-observer";
 
 import Layout from "@components/Layout";
 import Section from "@components/Section";
@@ -7,22 +8,9 @@ import Button from "@components/Button";
 
 import styles from "@styles/Home.module.scss";
 
-import { useRef, useState, useEffect } from "react";
-
 export default function Home() {
-  const myRef = useRef();
-  const [myElementIsVisible, updateMyElementIsVisible] = useState();
-
-  useEffect(() => {
-    console.log("myRef", myRef.current);
-    const observer = new IntersectionObserver((entries, observer) => {
-      const entry = entries[0];
-      updateMyElementIsVisible(entry.isIntersecting);
-      console.log("entry", entry);
-      console.log("entry.isIntersecting", entry.isIntersecting);
-    });
-    observer.observe(myRef.current);
-  }, []);
+  const { ref: myRef, inView: myElementIsVisible } = useInView();
+  const { ref: magicSectionRef, inView: magicSectionIsVisible } = useInView();
 
   return (
     <Layout>
@@ -112,9 +100,16 @@ export default function Home() {
 
       <Section backgroundColor="primary">
         <Container>
-          <h2 className={styles.heading}>Magic 🪄</h2>
-
-          <p>🚀</p>
+          <h2 ref={magicSectionRef} className={styles.heading}>
+            Magic 🪄
+          </h2>
+          <p>
+            <span
+              className={`${styles.rocket} ${
+                magicSectionIsVisible ? styles.animateRocket : ""
+              }`}
+            >🚀</span>
+          </p>
         </Container>
       </Section>
 
@@ -124,7 +119,7 @@ export default function Home() {
             Have you scrolled down here yet? 🧐
           </h2>
 
-          <p>{myElementIsVisible ? 'Yes ???' : 'No ????'}</p>
+          <p>{myElementIsVisible ? "Yes ???" : "No ????"}</p>
         </Container>
       </Section>
 
