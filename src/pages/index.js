@@ -23,7 +23,7 @@ export default function Home() {
           </h1>
 
           <p className={styles.subtitle}>
-            Cosmic web dev tutorials that will shock you with joy!
+            Cosmic web dev tutorials that will shock you with joy Test!
           </p>
         </Container>
       </Section>
